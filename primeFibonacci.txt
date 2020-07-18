@@ -1,0 +1,111 @@
+#include<stdio.h>
+#include<math.h>
+int isPrime(int num)
+{
+    int factors,count=0,endValue;
+    endValue=sqrt(num);
+    if(num==1)
+        return 0;
+    if(num==2||num==3)
+        return 1;
+    if(num%2==0)
+        return 0;
+    for(factors=2;factors<=endValue;factors++)
+    {
+        if(num%factors==0)
+        {
+            count++;
+            break;
+        }
+    }
+    if(count==0)
+        return 1;
+    else
+        return 0;
+}
+unsigned long long int fibonacciGeneration(unsigned long long int t1,unsigned long long int t2,int n)
+{
+    unsigned long long int t3;
+    int count;
+    for(count=3;count<=n;count++)
+    {
+        t3=t1+t2;
+        t1=t2;
+        t2=t3;
+    }
+    return t3;
+}
+int main()
+{
+    int n1,n2,num,prime[100],primeCount=0;
+    int unique[8]={0},uindex,index;
+    int count=0,max=0,min=10000;
+    scanf("%d %d",&n1,&n2);
+    for(num=n1;num<=n2;num++)
+    {
+        if(isPrime(num)==1)
+        {
+            //yes it is a prime number
+            prime[primeCount]=num;
+            primeCount++;
+        }
+    }
+    //generated all prime numbers in the range
+    for(index=0;index<primeCount;index++)
+    {
+        int combine,element;
+        for(combine=0;combine<primeCount;combine++)
+        {
+            if(index==combine)
+                continue;
+            if(prime[combine]<10)
+                element=prime[index]*10+prime[combine];
+            else
+                element=prime[index]*100+prime[combine];
+            //generate the combinations
+            switch(element)
+            {
+                case 237:
+                        uindex=0;
+                        break;
+                case 313:
+                        uindex=1;
+                        break;
+                case 317:
+                        uindex=2;
+                        break;
+                case 373:
+                        uindex=3;
+                        break;
+                case 537:
+                        uindex=4;
+                        break;
+                case 717:
+                        uindex=5;
+                        break;
+                case 737:
+                        uindex=6;
+                        break;
+                case 797:
+                        uindex=7;
+                        break;
+                default:uindex=-1;
+            }
+            if(uindex!=-1)
+                unique[uindex]++;
+            //pick only unique combinations
+            if(uindex!=-1 && unique[uindex]>1)//duplicate element
+                continue;
+            //not a duplicate element
+            if(isPrime(element)==1)
+            {
+                count++;
+                max=(element>max)?element:max;
+                min=(element<min)?element:min;
+            }
+        }
+    }
+    
+    printf("%llu",fibonacciGeneration(min,max,count));
+    return 0;
+}
